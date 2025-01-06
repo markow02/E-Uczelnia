@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="University.Views.EditClassroomView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/University.Views;component/SharedResources.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <!-- Style to display validation errors -->
+            <Style TargetType="TextBox">
+                <Style.Triggers>
+                    <!-- Trigger when validation error exists -->
+                    <Trigger Property="Validation.HasError" Value="True">
+                        <Setter Property="ToolTip"
+                                Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent, FallbackValue='Validation error'}" />
+                    </Trigger>
+
+                    <!-- Trigger when there are no validation errors -->
+                    <Trigger Property="Validation.HasError" Value="False">
+                        <Setter Property="ToolTip" Value="" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Header with Back and Save buttons -->
+        <DockPanel Grid.Row="0" LastChildFill="False">
+            <Button Content="Back"
+                    Command="{Binding Back}"
+                    Style="{StaticResource PrimaryButton}"
+                    Tag="&#xE72B;"
+                    DockPanel.Dock="Left"
+                    Margin="5" />
+            <TextBlock Text="Edit Classroom"
+                       FontSize="20"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center" />
+            <Button Content="Save"
+                    Command="{Binding Save}"
+                    Style="{StaticResource PrimaryButton}"
+                    Tag="&#xE74E;"
+                    DockPanel.Dock="Right"
+                    Margin="5" />
+        </DockPanel>
+
+        <!-- Form Fields -->
+        <StackPanel Grid.Row="1" Margin="10">
+            <WrapPanel Margin="0,5,0,5">
+                <TextBlock Text="Classroom Number:"
+                           Width="120"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource PrimaryTextBlock}" />
+                <TextBox Text="{Binding ClassroomName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Width="200"
+                         Style="{StaticResource PrimaryTextBox}" />
+                        
+            </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <TextBlock Text="Capacity:"
+                           Width="120"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource PrimaryTextBlock}" />
+                <TextBox Text="{Binding Capacity, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Width="200"
+                         Style="{StaticResource PrimaryTextBox}" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <TextBlock Text="Floor:"
+                           Width="120"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource PrimaryTextBlock}" />
+                <TextBox Text="{Binding Floor, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Width="200"
+                         Style="{StaticResource PrimaryTextBox}" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <CheckBox Content="Has Projector"
+                          IsChecked="{Binding HasProjector}" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <CheckBox Content="Is Lab"
+                          IsChecked="{Binding IsLab}" />
+            </WrapPanel>
+        </StackPanel>
+
+        <!-- Response Message -->
+        <TextBlock Text="{Binding Response}"
+                   Grid.Row="2"
+                   HorizontalAlignment="Center"
+                   Margin="5"
+                   Foreground="Red" />
+    </Grid>
+</UserControl>
