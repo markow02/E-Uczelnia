@@ -51,6 +51,7 @@ namespace University.Main
             serviceCollection.AddSingleton<IDialogService, DialogService>();
             serviceCollection.AddSingleton<MainWindowViewModel>();
             serviceCollection.AddSingleton<MainWindow>();
+            serviceCollection.AddTransient<IClassroomService, ClassroomService>();
         }
 
         private void ApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

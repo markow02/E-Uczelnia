@@ -46,10 +46,10 @@ namespace University.Data
             );
 
             modelBuilder.Entity<Classroom>().HasData(
-              new Classroom { ClassroomId = 1, ClassroomNumber = "A101", Capacity = 30 },
-              new Classroom { ClassroomId = 2, ClassroomNumber = "B202", Capacity = 50 },
-              new Classroom { ClassroomId = 3, ClassroomNumber = "C303", Capacity = 45 }
-          );
+                new Classroom { ClassroomId = 1, ClassroomNumber = "A101", Capacity = 30, HasProjector = true, IsLab = false },
+                new Classroom { ClassroomId = 2, ClassroomNumber = "B202", Capacity = 50, HasProjector = false, IsLab = true },
+                new Classroom { ClassroomId = 3, ClassroomNumber = "C303", Capacity = 45, HasProjector = true, IsLab = true }
+            );
         }
 
         public void SaveData(string filePath)

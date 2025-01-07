@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\University.Controls\University.Controls.csproj" />
     <ProjectReference Include="..\University.Interfaces\University.Interfaces.csproj" />
+    <ProjectReference Include="..\University.Models\University.Models.csproj" />
   </ItemGroup>
 
 </Project>

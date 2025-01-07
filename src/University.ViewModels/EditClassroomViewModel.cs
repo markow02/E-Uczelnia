@@ -1,28 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
-using University.Data;
+﻿using System.Threading.Tasks;
 using University.Interfaces;
 
 namespace University.ViewModels;
 
 public class EditClassroomViewModel : ClassroomBaseViewModel
 {
-    public EditClassroomViewModel(UniversityContext context, IDialogService dialogService)
-        : base(context, dialogService)
+    private readonly IClassroomService _classroomService;
+
+    public EditClassroomViewModel(IClassroomService classroomService, IDialogService dialogService)
+        : base(classroomService, dialogService)
     {
+        _classroomService = classroomService;
     }
 
-    private string _classroomNumber = string.Empty;
-    public string ClassroomNumber
-    {
-        get => _classroomNumber;
-        set
-        {
-            _classroomNumber = value;
-            OnPropertyChanged(nameof(ClassroomNumber));
-        }
-    }
-
-    public override void SaveData(object? obj)
+    public override async void SaveData(object? obj)
     {
         if (!IsValid())
         {
@@ -30,20 +21,21 @@ public class EditClassroomViewModel : ClassroomBaseViewModel
             return;
         }
 
-        if (_classroom is null)
+        var classroom = await _classroomService.GetClassroomByIdAsync(ClassroomId);
+        if (classroom != null)
         {
-            return;
+            classroom.ClassroomNumber = this.ClassroomName;
+            classroom.Capacity = this.Capacity;
+            classroom.Floor = this.Floor;
+            classroom.HasProjector = this.HasProjector;
+            classroom.IsLab = this.IsLab;
+
+            await _classroomService.SaveDataAsync(classroom);
+            Response = "Classroom Data Updated";
         }
-
-        _classroom.ClassroomNumber = ClassroomNumber;
-        _classroom.Capacity = Capacity;
-        _classroom.Floor = Floor;
-        _classroom.HasProjector = HasProjector;
-        _classroom.IsLab = IsLab;
-
-        _context.Entry(_classroom).State = EntityState.Modified;
-        _context.SaveChanges();
-
-        Response = "Classroom data updated successfully";
+        else
+        {
+            Response = "Error: Classroom not found";
+        }
     }
 }

@@ -17,7 +17,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" LastChildFill="False">
-            <Button Content="Add Studentss" Command="{Binding Add}" DockPanel.Dock="Right" Margin="5" Style="{StaticResource PrimaryButton}" Tag="&#xE710;" />
+            <Button Content="Add Students" Command="{Binding Add}" DockPanel.Dock="Right" Margin="5" Style="{StaticResource PrimaryButton}" Tag="&#xE710;" />
         </DockPanel>
         <ListView Grid.Row="1" ItemsSource="{Binding Students}" BorderThickness="0" ItemContainerStyle="{StaticResource ListViewPrimaryItem}">
             <ListView.View>

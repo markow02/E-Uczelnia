@@ -1,12 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using University.Data;
 using University.Interfaces;
 using University.Models;
 
@@ -16,74 +13,50 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
 {
     #region Properties And Ctor
 
-    protected readonly UniversityContext _context;
+    protected readonly IClassroomService _classroomService;
     protected readonly IDialogService _dialogService;
     protected Classroom? _classroom = new Classroom();
 
     protected ClassroomBaseViewModel(
-        UniversityContext context,
+        IClassroomService classroomService,
         IDialogService dialogService)
     {
-        _context = context;
+        _classroomService = classroomService;
         _dialogService = dialogService;
     }
 
-    public string Error
-    {
-        get { return string.Empty; }
-    }
+    public string Error => string.Empty;
 
     public string this[string columnName]
     {
         get
         {
-            if (columnName == "ClassroomName")
+            return columnName switch
             {
-                if (string.IsNullOrEmpty(ClassroomName))
-                {
-                    return "Classroom name is required";
-                }
-            }
-            if (columnName == "Capacity")
-            {
-                if (Capacity <= 0)
-                {
-                    return "Capacity must be greater than 0";
-                }
-            }
-            if (columnName == "Floor")
-            {
-                if (Floor <= 0)
-                {
-                    return "Floor must be greater than 0";
-                }
-            }
-            return string.Empty;
+                "ClassroomName" when string.IsNullOrEmpty(ClassroomName) => "Classroom name is required",
+                "Capacity" when Capacity <= 0 => "Capacity must be greater than 0",
+                "Floor" when Floor <= 0 => "Floor must be greater than 0",
+                _ => string.Empty,
+            };
         }
     }
 
-    private long _classroomId = 0;
+    private long _classroomId;
     public long ClassroomId
     {
-        get
-        {
-            return _classroomId;
-        }
+        get => _classroomId;
         set
         {
             _classroomId = value;
             OnPropertyChanged(nameof(ClassroomId));
-            LoadRoomData();
+            _ = LoadRoomDataAsync();
         }
     }
 
     private string _classroomName = string.Empty;
     public string ClassroomName
     {
-        get
-        {
-            return _classroomName;
-        }
+        get => _classroomName;
         set
         {
             _classroomName = value;
@@ -91,13 +64,10 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
         }
     }
 
-    private int _capacity = 0;
+    private int _capacity;
     public int Capacity
     {
-        get
-        {
-            return _capacity;
-        }
+        get => _capacity;
         set
         {
             _capacity = value;
@@ -105,13 +75,10 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
         }
     }
 
-    private int _floor = 0;
+    private int _floor;
     public int Floor
     {
-        get
-        {
-            return _floor;
-        }
+        get => _floor;
         set
         {
             _floor = value;
@@ -119,13 +86,10 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
         }
     }
 
-    private bool _hasProjector = false;
+    private bool _hasProjector;
     public bool HasProjector
     {
-        get
-        {
-            return _hasProjector;
-        }
+        get => _hasProjector;
         set
         {
             _hasProjector = value;
@@ -133,13 +97,10 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
         }
     }
 
-    private bool _isLab = false;
+    private bool _isLab;
     public bool IsLab
     {
-        get
-        {
-            return _isLab;
-        }
+        get => _isLab;
         set
         {
             _isLab = value;
@@ -150,10 +111,7 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
     private string _response = string.Empty;
     public string Response
     {
-        get
-        {
-            return _response;
-        }
+        get => _response;
         set
         {
             _response = value;
@@ -161,40 +119,20 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
         }
     }
 
-    private ICommand? _back = null;
-    public ICommand Back
-    {
-        get
-        {
-            if (_back is null)
-            {
-                _back = new RelayCommand<object>(NavigateBack);
-            }
-            return _back;
-        }
-    }
+    private ICommand? _back;
+    public ICommand Back => _back ??= new RelayCommand<object>(NavigateBack);
 
     private void NavigateBack(object? obj)
     {
         var instance = MainWindowViewModel.Instance();
         if (instance is not null)
         {
-            instance.ClassroomsSubView = new ClassroomsViewModel(_context, _dialogService);
+            instance.ClassroomsSubView = new ClassroomsViewModel(_classroomService, _dialogService);
         }
     }
 
-    private ICommand? _save = null;
-    public ICommand Save
-    {
-        get
-        {
-            if (_save is null)
-            {
-                _save = new RelayCommand<object>(SaveData);
-            }
-            return _save;
-        }
-    }
+    private ICommand? _save;
+    public ICommand Save => _save ??= new RelayCommand<object>(SaveData);
 
     #endregion // Properties And Ctor
 
@@ -202,7 +140,7 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
 
     public virtual void SaveData(object? obj)
     {
-        // TODO: Implement SaveData in derived classes
+        // To be implemented in derived classes
     }
 
     #endregion // Public Methods
@@ -212,32 +150,33 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
     protected bool IsValid()
     {
         var errors = new List<string>
-    {
-        this["ClassroomName"],
-        this["Capacity"],
-        this["Floor"]
-    };
+        {
+            this["ClassroomName"],
+            this["Capacity"],
+            this["Floor"]
+        };
 
         return errors.All(string.IsNullOrEmpty);
     }
 
-
-    protected void LoadRoomData()
+    protected async Task LoadRoomDataAsync()
     {
-        if (_context?.Classrooms is null)
+        if (_classroomService is null)
         {
             return;
         }
-        _classroom = _context.Classrooms.Find(ClassroomId);
+
+        _classroom = await _classroomService.GetClassroomByIdAsync(ClassroomId);
         if (_classroom is null)
         {
             return;
         }
-        this.ClassroomName = _classroom.ClassroomNumber; // Fixed property name
-        this.Capacity = _classroom.Capacity;
-        this.Floor = _classroom.Floor;
-        this.HasProjector = _classroom.HasProjector;
-        this.IsLab = _classroom.IsLab;
+
+        ClassroomName = _classroom.ClassroomNumber; // Fixed property name
+        Capacity = _classroom.Capacity;
+        Floor = _classroom.Floor;
+        HasProjector = _classroom.HasProjector;
+        IsLab = _classroom.IsLab;
     }
 
     #endregion // Protected Methods

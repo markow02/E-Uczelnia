@@ -8,6 +8,7 @@ public class MainWindowViewModel : ViewModelBase
 {
     private readonly UniversityContext _context;
     private readonly IDialogService _dialogService;
+    private readonly IClassroomService _classroomService;
 
     private int _selectedTab;
     public int SelectedTab
@@ -85,10 +86,11 @@ public class MainWindowViewModel : ViewModelBase
         return _instance;
     }
 
-    public MainWindowViewModel(UniversityContext context, IDialogService dialogService)
+    public MainWindowViewModel(UniversityContext context, IDialogService dialogService, IClassroomService classroomService)
     {
         _context = context;
         _dialogService = dialogService;
+        _classroomService = classroomService;
 
         if (_instance is null)
         {
@@ -97,7 +99,7 @@ public class MainWindowViewModel : ViewModelBase
 
         StudentsSubView = new StudentsViewModel(_context, _dialogService);
         SubjectsSubView = new SubjectsViewModel(_context, _dialogService);
-        ClassroomsSubView = new ClassroomsViewModel(_context, _dialogService);
+        ClassroomsSubView = new ClassroomsViewModel(_classroomService, _dialogService);
         SearchSubView = new SearchViewModel(_context, _dialogService);
     }
 }

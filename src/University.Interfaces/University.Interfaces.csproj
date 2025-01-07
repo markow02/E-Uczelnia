@@ -11,5 +11,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
-
+	<ItemGroup>
+		<ProjectReference Include="..\University.Models\University.Models.csproj" />
+	</ItemGroup>
 </Project>

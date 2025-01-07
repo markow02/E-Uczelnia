@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using University.Data;
 using University.Interfaces;
 using University.Models;
 
@@ -10,7 +8,7 @@ namespace University.ViewModels
 {
     public class ClassroomsViewModel : ViewModelBase
     {
-        private readonly UniversityContext _context;
+        private readonly IClassroomService _classroomService;
         private readonly IDialogService _dialogService;
 
         private bool? _dialogResult = null;
@@ -43,7 +41,7 @@ namespace University.ViewModels
             var instance = MainWindowViewModel.Instance();
             if (instance is not null)
             {
-                instance.ClassroomsSubView = new AddClassroomViewModel(_context, _dialogService);
+                instance.ClassroomsSubView = new AddClassroomViewModel(_classroomService, _dialogService);
             }
         }
 
@@ -54,7 +52,7 @@ namespace University.ViewModels
         {
             if (obj is long classroomId)
             {
-                var editClassroomViewModel = new EditClassroomViewModel(_context, _dialogService)
+                var editClassroomViewModel = new EditClassroomViewModel(_classroomService, _dialogService)
                 {
                     ClassroomId = classroomId
                 };
@@ -70,11 +68,11 @@ namespace University.ViewModels
         private ICommand? _remove;
         public ICommand Remove => _remove ??= new RelayCommand<object>(RemoveClassroom);
 
-        private void RemoveClassroom(object? obj)
+        private async void RemoveClassroom(object? obj)
         {
             if (obj is long classroomId)
             {
-                var classroom = _context.Classrooms.Find(classroomId);
+                var classroom = Classrooms?.FirstOrDefault(c => c.ClassroomId == classroomId);
                 if (classroom is not null)
                 {
                     DialogResult = _dialogService.Show(
@@ -83,21 +81,24 @@ namespace University.ViewModels
 
                     if (DialogResult == true)
                     {
-                        _context.Classrooms.Remove(classroom);
-                        _context.SaveChanges();
+                        Classrooms?.Remove(classroom);
+                        await _classroomService.SaveDataAsync(classroom);
                     }
                 }
             }
         }
 
-        public ClassroomsViewModel(UniversityContext context, IDialogService dialogService)
+        public ClassroomsViewModel(IClassroomService classroomService, IDialogService dialogService)
         {
-            _context = context;
+            _classroomService = classroomService;
             _dialogService = dialogService;
 
-            _context.Database.EnsureCreated();
-            _context.Classrooms.Load();
-            Classrooms = _context.Classrooms.Local.ToObservableCollection();
+            LoadClassrooms();
+        }
+
+        private async void LoadClassrooms()
+        {
+            Classrooms = new ObservableCollection<Classroom>(await _classroomService.LoadDataAsync());
         }
     }
 }

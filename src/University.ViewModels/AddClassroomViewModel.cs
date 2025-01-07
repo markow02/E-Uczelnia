@@ -1,4 +1,4 @@
-﻿using University.Data;
+﻿using System.Threading.Tasks;
 using University.Interfaces;
 using University.Models;
 
@@ -6,17 +6,21 @@ namespace University.ViewModels;
 
 public class AddClassroomViewModel : ClassroomBaseViewModel
 {
-    public AddClassroomViewModel(UniversityContext context, IDialogService dialogService)
-        : base(context, dialogService)
+    private readonly IClassroomService _classroomService;
+
+    public AddClassroomViewModel(IClassroomService classroomService, IDialogService dialogService)
+        : base(classroomService, dialogService)
     {
+        _classroomService = classroomService;
     }
+
     public string ClassroomNumber
     {
         get => ClassroomName;
         set => ClassroomName = value;
     }
 
-    public override void SaveData(object? obj)
+    public override async void SaveData(object? obj)
     {
         if (!IsValid())
         {
@@ -33,11 +37,9 @@ public class AddClassroomViewModel : ClassroomBaseViewModel
             IsLab = this.IsLab
         };
 
-        _context.Classrooms.Add(classroom);
-        _context.SaveChanges();
+        // Zapisujemy dane za pomocą ClassroomService
+        await _classroomService.SaveDataAsync(classroom);
 
         Response = "Classroom Data Saved";
     }
-
-
 }
