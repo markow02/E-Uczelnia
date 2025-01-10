@@ -31,7 +31,7 @@ namespace University.Main
                 dbContext.Database.EnsureDeleted();
                 dbContext.Database.EnsureCreated();
 
-                dbContext.SaveData("data.json"); // Save data to JSON file after database recreation
+                dbContext.SaveData("data.json");
             }
 
             MainWindow mainWindow = ServiceProvider.GetService<MainWindow>();

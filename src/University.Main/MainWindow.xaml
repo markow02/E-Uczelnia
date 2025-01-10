@@ -22,7 +22,7 @@
             <TabItem Header="Subjects" Tag="&#xE82D;">
                 <ContentControl Content="{Binding SubjectsSubView}" />
             </TabItem>
-            <TabItem Header="Classroom" Tag="&#xE7BE;">
+            <TabItem Header="Classrooms" Tag="&#xE7BE;">
                 <ContentControl Content="{Binding ClassroomsSubView}" />
             </TabItem>
             <TabItem Header="Enrollments" Tag="&#xE8D2;">

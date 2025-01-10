@@ -37,6 +37,9 @@
     <Compile Update="EditClassroomView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="AddEnrollmentView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EditStudentView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

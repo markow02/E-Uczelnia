@@ -115,6 +115,6 @@ public class MainWindowViewModel : ViewModelBase
         SubjectsSubView = new SubjectsViewModel(_context, _dialogService);
         ClassroomsSubView = new ClassroomsViewModel(_classroomService, _dialogService);
         SearchSubView = new SearchViewModel(_context, _dialogService);
-        EnrollmentsSubView = new EnrollmentsViewModel(_context, _dialogService);
+        EnrollmentsSubView = new EnrollmentViewModel(_context, _dialogService);
     }
 }
