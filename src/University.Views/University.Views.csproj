@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\University.Controls\University.Controls.csproj" />
+    <ProjectReference Include="..\University.Services\University.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>

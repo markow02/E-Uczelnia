@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using University.Interfaces;
 using University.Data;
 
@@ -80,6 +80,20 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    private object? _enrollmentsSubView = null;
+    public object? EnrollmentsSubView
+    {
+        get
+        {
+            return _enrollmentsSubView;
+        }
+        set
+        {
+            _enrollmentsSubView = value;
+            OnPropertyChanged(nameof(EnrollmentsSubView));
+        }
+    }
+
     private static MainWindowViewModel? _instance = null;
     public static MainWindowViewModel? Instance()
     {
@@ -101,5 +115,6 @@ public class MainWindowViewModel : ViewModelBase
         SubjectsSubView = new SubjectsViewModel(_context, _dialogService);
         ClassroomsSubView = new ClassroomsViewModel(_classroomService, _dialogService);
         SearchSubView = new SearchViewModel(_context, _dialogService);
+        EnrollmentsSubView = new EnrollmentsViewModel(_context, _dialogService);
     }
 }

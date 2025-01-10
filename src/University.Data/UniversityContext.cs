@@ -20,6 +20,11 @@ namespace University.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+        //public DbSet<SubjectAssignment> SubjectAssignments { get; set; }
+        //public DbSet<Grade> Grades { get; set; }
+        //public DbSet<Attendance> Attendances { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -50,6 +55,13 @@ namespace University.Data
                 new Classroom { ClassroomId = 2, ClassroomNumber = "B202", Capacity = 50, HasProjector = false, IsLab = true },
                 new Classroom { ClassroomId = 3, ClassroomNumber = "C303", Capacity = 45, HasProjector = true, IsLab = true }
             );
+
+            modelBuilder.Entity<Enrollment>().HasData(
+                new Enrollment { EnrollmentId = 1, CandidateName = "Jan", CandidateSurname = "Nowak" },
+                new Enrollment { EnrollmentId = 2, CandidateName = "Anna", CandidateSurname = "Kowalska" },
+                new Enrollment { EnrollmentId = 3, CandidateName = "Michał", CandidateSurname = "Kowalczyk" }
+            );
+
         }
 
         public void SaveData(string filePath)
@@ -58,7 +70,8 @@ namespace University.Data
             {
                 Students = Students.ToList(),
                 Subjects = Subjects.ToList(),
-                Classrooms = Classrooms.ToList()
+                Classrooms = Classrooms.ToList(),
+                Enrollments = Enrollments.ToList()
             };
 
             var options = new JsonSerializerOptions
@@ -89,6 +102,7 @@ namespace University.Data
                 Students.AddRange(data.Students);
                 Subjects.AddRange(data.Subjects);
                 Classrooms.AddRange(data.Classrooms);
+                Enrollments.AddRange(data.Enrollments);
                 SaveChanges();
             }
         }
@@ -98,6 +112,7 @@ namespace University.Data
             public List<Student> Students { get; set; }
             public List<Subject> Subjects { get; set; }
             public List<Classroom> Classrooms { get; set; }
+            public List<Enrollment> Enrollments { get; set; }
         }
 
 
