@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace University.Data
 {
@@ -21,8 +22,10 @@ namespace University.Data
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+
         //public DbSet<SubjectAssignment> SubjectAssignments { get; set; }
-        //public DbSet<Grade> Grades { get; set; }
+
         //public DbSet<Attendance> Attendances { get; set; }
 
 
@@ -38,6 +41,19 @@ namespace University.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Subject>().Ignore(s => s.IsSelected);
+
+            // Relacje dla Grade
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.Student)               // Relacja 1 do wielu: Grade -> Student
+                .WithMany(s => s.Grades)              // Student może mieć wiele ocen
+                .HasForeignKey(g => g.StudentId)      // Klucz obcy
+                .OnDelete(DeleteBehavior.Cascade);    // Usuwanie kaskadowe
+
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.Subject)               // Relacja 1 do wielu: Grade -> Subject
+                .WithMany(s => s.Grades)              // Subject może mieć wiele ocen
+                .HasForeignKey(g => g.SubjectId)      // Klucz obcy
+                .OnDelete(DeleteBehavior.Cascade);    // Usuwanie kaskadowe
 
             modelBuilder.Entity<Student>().HasData(
                 new Student { StudentId = 1, Name = "Wieńczysław", LastName = "Nowakowicz", PESEL = "PESEL1", BirthDate = new DateTime(1987, 05, 22) },
@@ -57,9 +73,17 @@ namespace University.Data
             );
 
             modelBuilder.Entity<Enrollment>().HasData(
-                new Enrollment { EnrollmentId = 1, CandidateName = "Jan", CandidateSurname = "Nowak" },
+                new Enrollment { EnrollmentId = 1, CandidateName = "", CandidateSurname = "Nowak" },
                 new Enrollment { EnrollmentId = 2, CandidateName = "Anna", CandidateSurname = "Kowalska" },
                 new Enrollment { EnrollmentId = 3, CandidateName = "Michał", CandidateSurname = "Kowalczyk" }
+            );
+
+            modelBuilder.Entity<Grade>().HasData(
+                new Grade { GradeId = 1, GradeValue = 5, StudentId = 1, SubjectId = 1, Date = new DateTime(2024, 01, 15) },
+                new Grade { GradeId = 2, GradeValue = 4, StudentId = 2, SubjectId = 2, Date = new DateTime(2024, 02, 20) },
+                new Grade { GradeId = 3, GradeValue = 3, StudentId = 3, SubjectId = 3, Date = new DateTime(2024, 03, 25) },
+                new Grade { GradeId = 4, GradeValue = 2, StudentId = 1, SubjectId = 2, Date = new DateTime(2024, 04, 30) },
+                new Grade { GradeId = 5, GradeValue = 1, StudentId = 2, SubjectId = 3, Date = new DateTime(2024, 05, 05) }
             );
 
         }

@@ -41,4 +41,13 @@
     <DataTemplate DataType="{x:Type viewmodels:EditEnrollmentViewModel}">
         <views:EditEnrollmentView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodels:GradeViewModel}">
+        <views:GradeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodels:EditGradeViewModel}">
+        <views:EditGradeView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodels:AddGradeViewModel}">
+        <views:AddGradeView />
+    </DataTemplate>
 </ResourceDictionary>

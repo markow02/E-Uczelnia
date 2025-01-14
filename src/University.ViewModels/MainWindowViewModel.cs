@@ -94,6 +94,20 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    private object? _gradesSubView = null;
+    public object? GradesSubView
+    {
+        get
+        {
+            return _gradesSubView;
+        }
+        set
+        {
+            _gradesSubView = value;
+            OnPropertyChanged(nameof(GradesSubView));
+        }
+    }
+
     private static MainWindowViewModel? _instance = null;
     public static MainWindowViewModel? Instance()
     {
@@ -115,6 +129,7 @@ public class MainWindowViewModel : ViewModelBase
         SubjectsSubView = new SubjectsViewModel(_context, _dialogService);
         ClassroomsSubView = new ClassroomsViewModel(_classroomService, _dialogService);
         SearchSubView = new SearchViewModel(_context, _dialogService);
+        GradesSubView = new GradeViewModel(_context, _dialogService);
         EnrollmentsSubView = new EnrollmentViewModel(_context, _dialogService);
     }
 }

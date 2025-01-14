@@ -11,5 +11,6 @@ namespace University.Models
         public string PESEL { get; set; } = string.Empty;
         public DateTime? BirthDate { get; set; } = null;
         public virtual ICollection<Subject>? Subjects { get; set; } = null;
+        public virtual ICollection<Grade>? Grades { get; set; }
     }
 }

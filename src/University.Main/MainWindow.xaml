@@ -28,6 +28,9 @@
             <TabItem Header="Enrollments" Tag="&#xE8D2;">
                 <ContentControl Content="{Binding EnrollmentsSubView}" />
             </TabItem>
+            <TabItem Header="Grades" Tag="&#xE8D2;">
+                <ContentControl Content="{Binding GradesSubView}" />
+            </TabItem>
             <TabItem Header="Search" Tag="&#xE773;">
                 <ContentControl Content="{Binding SearchSubView}" />
             </TabItem>

@@ -2,10 +2,19 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
+    <Compile Update="AddGradeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EditEnrollmentView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="EditGradeView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EnrollmentView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GradeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -13,10 +22,19 @@
     <Page Update="AddEnrollmentView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="AddGradeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="EditEnrollmentView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="EditGradeView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="EnrollmentView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GradeView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
