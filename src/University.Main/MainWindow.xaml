@@ -25,11 +25,14 @@
             <TabItem Header="Classrooms" Tag="&#xE7BE;">
                 <ContentControl Content="{Binding ClassroomsSubView}" />
             </TabItem>
-            <TabItem Header="Enrollments" Tag="&#xE8D2;">
-                <ContentControl Content="{Binding EnrollmentsSubView}" />
-            </TabItem>
-            <TabItem Header="Grades" Tag="&#xE8D2;">
+            <TabItem Header="Grades" Tag="&#xEB95;">
                 <ContentControl Content="{Binding GradesSubView}" />
+            </TabItem>
+            <TabItem Header="Activity Clubs" Tag="&#xE790;">
+                <ContentControl Content="{Binding ActivityClubSubView}" />
+            </TabItem>
+            <TabItem Header="Enrollments" Tag="&#xEC25;">
+                <ContentControl Content="{Binding EnrollmentsSubView}" />
             </TabItem>
             <TabItem Header="Search" Tag="&#xE773;">
                 <ContentControl Content="{Binding SearchSubView}" />

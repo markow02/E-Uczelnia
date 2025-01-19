@@ -50,4 +50,13 @@
     <DataTemplate DataType="{x:Type viewmodels:AddGradeViewModel}">
         <views:AddGradeView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodels:ActivityClubViewModel}">
+        <views:ActivityClubView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodels:AddActivityClubViewModel}">
+        <views:AddActivityClubView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type viewmodels:EditActivityClubViewModel}">
+        <views:EditActivityClubView />
+    </DataTemplate>
 </ResourceDictionary>

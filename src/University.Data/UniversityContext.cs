@@ -23,11 +23,7 @@ namespace University.Data
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Grade> Grades { get; set; }
-
-        //public DbSet<SubjectAssignment> SubjectAssignments { get; set; }
-
-        //public DbSet<Attendance> Attendances { get; set; }
-
+        public DbSet<ActivityClub> ActivityClubs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -57,8 +53,8 @@ namespace University.Data
 
             modelBuilder.Entity<Student>().HasData(
                 new Student { StudentId = 1, Name = "Wieńczysław", LastName = "Nowakowicz", PESEL = "PESEL1", BirthDate = new DateTime(1987, 05, 22) },
-                new Student { StudentId = 2, Name = "Stanisław", LastName = "Nowakowicz", PESEL = "PESEL2", BirthDate = new DateTime(2019, 06, 25) },
-                new Student { StudentId = 3, Name = "Eugenia", LastName = "Nowakowicz", PESEL = "PESEL3", BirthDate = new DateTime(2021, 06, 08) });
+                new Student { StudentId = 2, Name = "Stanisław", LastName = "Gagatek", PESEL = "PESEL2", BirthDate = new DateTime(2019, 06, 25) },
+                new Student { StudentId = 3, Name = "Eugenia", LastName = "Frankowska", PESEL = "PESEL3", BirthDate = new DateTime(2021, 06, 08) });
 
             modelBuilder.Entity<Subject>().HasData(
                 new Subject { SubjectId = 1, Name = "Matematyka", Semester = "1", Lecturer = "Michalina Warszawa" },
@@ -73,7 +69,7 @@ namespace University.Data
             );
 
             modelBuilder.Entity<Enrollment>().HasData(
-                new Enrollment { EnrollmentId = 1, CandidateName = "", CandidateSurname = "Nowak" },
+                new Enrollment { EnrollmentId = 1, CandidateName = "Jan", CandidateSurname = "Nowak" },
                 new Enrollment { EnrollmentId = 2, CandidateName = "Anna", CandidateSurname = "Kowalska" },
                 new Enrollment { EnrollmentId = 3, CandidateName = "Michał", CandidateSurname = "Kowalczyk" }
             );
@@ -86,6 +82,12 @@ namespace University.Data
                 new Grade { GradeId = 5, GradeValue = 1, StudentId = 2, SubjectId = 3, Date = new DateTime(2024, 05, 05) }
             );
 
+            modelBuilder.Entity<ActivityClub>().HasData(
+            new ActivityClub { ActivityClubId = 1, ActivityClubName = "Math Club", MeetingDay = "Monday", ActivityClubDescription = "Explore the beauty of numbers and logic." },
+            new ActivityClub { ActivityClubId = 2, ActivityClubName = "Biology Club", MeetingDay = "Tuesday", ActivityClubDescription = "Dive into the wonders of life and nature." },
+            new ActivityClub { ActivityClubId = 3, ActivityClubName = "Chemistry Club", MeetingDay = "Friday", ActivityClubDescription = "Experiment with reactions and unlock new discoveries." }
+);
+
         }
 
         public void SaveData(string filePath)
@@ -95,7 +97,9 @@ namespace University.Data
                 Students = Students.ToList(),
                 Subjects = Subjects.ToList(),
                 Classrooms = Classrooms.ToList(),
-                Enrollments = Enrollments.ToList()
+                Enrollments = Enrollments.ToList(),
+                Grades = Grades.ToList(),
+                ActivityClubs = ActivityClubs.ToList()
             };
 
             var options = new JsonSerializerOptions
@@ -127,6 +131,9 @@ namespace University.Data
                 Subjects.AddRange(data.Subjects);
                 Classrooms.AddRange(data.Classrooms);
                 Enrollments.AddRange(data.Enrollments);
+                Grades.AddRange(data.Grades);
+                ActivityClubs.AddRange(data.ActivityClubs);
+
                 SaveChanges();
             }
         }
@@ -137,8 +144,8 @@ namespace University.Data
             public List<Subject> Subjects { get; set; }
             public List<Classroom> Classrooms { get; set; }
             public List<Enrollment> Enrollments { get; set; }
+            public List<Grade> Grades { get; set; }
+            public List<ActivityClub> ActivityClubs { get; set; }
         }
-
-
     }
 }

@@ -6,7 +6,6 @@ using University.Interfaces;
 using University.Models;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace University.ViewModels
 {
     public class GradeViewModel : ViewModelBase
@@ -14,7 +13,7 @@ namespace University.ViewModels
         private readonly UniversityContext _context;
         private readonly IDialogService _dialogService;
 
-        private bool? _dialogResult = null;
+        private bool? _dialogResult;
         public bool? DialogResult
         {
             get => _dialogResult;
@@ -25,8 +24,8 @@ namespace University.ViewModels
             }
         }
 
-        private ObservableCollection<Grade>? _grades;
-        public ObservableCollection<Grade>? Grades
+        private ObservableCollection<Grade> _grades;
+        public ObservableCollection<Grade> Grades
         {
             get => _grades;
             set
@@ -36,61 +35,9 @@ namespace University.ViewModels
             }
         }
 
-        private ICommand? _add;
-        public ICommand Add => _add ??= new RelayCommand(AddNewGrade);
-
-        private void AddNewGrade()
-        {
-            var instance = MainWindowViewModel.Instance();
-            if (instance is not null)
-            {
-                instance.GradesSubView = new AddGradeViewModel(_context, _dialogService);
-            }
-        }
-
-        private ICommand? _edit;
-        public ICommand Edit => _edit ??= new RelayCommand<object>(EditGrade);
-
-        private void EditGrade(object? obj)
-        {
-            if (obj is int gradeId)
-            {
-                var editGradeViewModel = new EditGradeViewModel(_context, _dialogService)
-                {
-                    GradeId = gradeId
-                };
-
-                var instance = MainWindowViewModel.Instance();
-                if (instance is not null)
-                {
-                    instance.GradesSubView = editGradeViewModel;
-                }
-            }
-        }
-
-        private ICommand? _remove;
-        public ICommand Remove => _remove ??= new RelayCommand<object>(RemoveGrade);
-
-        private async void RemoveGrade(object? obj)
-        {
-            if (obj is int gradeId)
-            {
-                var grade = Grades?.FirstOrDefault(g => g.GradeId == gradeId);
-                if (grade is not null)
-                {
-                    DialogResult = _dialogService.Show(
-                        $"Are you sure you want to remove the grade for '{grade.Student.Name} in {grade.Subject.Name}'?"
-                    );
-
-                    if (DialogResult == true)
-                    {
-                        Grades?.Remove(grade);
-                        _context.Grades.Remove(grade);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-            }
-        }
+        public ICommand AddCommand { get; }
+        public ICommand EditCommand { get; }
+        public ICommand RemoveCommand { get; }
 
         public GradeViewModel(UniversityContext context, IDialogService dialogService)
         {
@@ -100,6 +47,43 @@ namespace University.ViewModels
             _context.Database.EnsureCreated();
             _context.Grades.Load();
             Grades = _context.Grades.Local.ToObservableCollection();
+
+            AddCommand = new RelayCommand(AddNewGrade);
+            EditCommand = new RelayCommand<object>(EditGrade);
+            RemoveCommand = new AsyncRelayCommand<object>(RemoveGrade);
+        }
+
+        private void AddNewGrade()
+        {
+            var instance = MainWindowViewModel.Instance();
+            if (instance is not null)
+            {
+                instance.GradesSubView = new AddGradeViewModel(_context, _dialogService);
+            }
+
+        }
+
+        private void EditGrade(object obj)
+        {
+            if (obj is Grade grade)
+            {
+                var instance = MainWindowViewModel.Instance();
+                instance?.SetEditGradeView(new EditGradeViewModel(_context, _dialogService, grade));
+            }
+        }
+
+        private async Task RemoveGrade(object obj)
+        {
+            if (obj is Grade grade)
+            {
+                var confirmed = _dialogService.Show($"Are you sure you want to remove this grade?");
+                if (confirmed == true)
+                {
+                    Grades.Remove(grade);
+                    _context.Grades.Remove(grade);
+                    await _context.SaveChangesAsync();
+                }
+            }
         }
     }
 }

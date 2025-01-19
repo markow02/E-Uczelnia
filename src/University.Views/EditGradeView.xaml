@@ -57,23 +57,25 @@
         <!-- Form Fields -->
         <StackPanel Grid.Row="1" Margin="10">
             <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Student ID:"
+                <TextBlock Text="Student:"
                            Width="120"
                            VerticalAlignment="Center"
                            Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding StudentId, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                         Width="200"
-                         Style="{StaticResource PrimaryTextBox}" />
+                <ComboBox ItemsSource="{Binding StudentLastNames}"
+                          SelectedItem="{Binding SelectedStudentLastName, UpdateSourceTrigger=PropertyChanged}"
+                          Width="200"
+                          Style="{StaticResource PrimaryComboBox}" />
             </WrapPanel>
 
             <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Subject ID:"
+                <TextBlock Text="Subject:"
                            Width="120"
                            VerticalAlignment="Center"
                            Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding SubjectId, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                         Width="200"
-                         Style="{StaticResource PrimaryTextBox}" />
+                <ComboBox ItemsSource="{Binding SubjectNames}"
+                          SelectedItem="{Binding SelectedSubjectName, UpdateSourceTrigger=PropertyChanged}"
+                          Width="200"
+                          Style="{StaticResource PrimaryComboBox}" />
             </WrapPanel>
 
             <WrapPanel Margin="0,5,0,5">
@@ -91,9 +93,9 @@
                            Width="120"
                            VerticalAlignment="Center"
                            Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding Date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                         Width="200"
-                         Style="{StaticResource PrimaryTextBox}" />
+                <DatePicker SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            Width="200"
+                            Style="{StaticResource PrimaryDatePicker}" />
             </WrapPanel>
         </StackPanel>
 

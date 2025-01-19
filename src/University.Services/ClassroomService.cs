@@ -23,7 +23,6 @@ namespace University.Services
 
         public async Task<bool> IsValidAsync(Classroom classroom)
         {
-            // Prosta walidacja
             if (string.IsNullOrWhiteSpace(classroom.ClassroomNumber) || classroom.Capacity <= 0)
             {
                 return await Task.FromResult(false);

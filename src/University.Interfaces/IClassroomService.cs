@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using University.Models;
+﻿using University.Models;
 
 namespace University.Interfaces
 {

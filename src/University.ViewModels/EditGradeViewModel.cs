@@ -5,13 +5,14 @@ using System.Windows.Input;
 using University.Data;
 using University.Interfaces;
 using University.Models;
+using System.Collections.ObjectModel;
 
 namespace University.ViewModels
 {
     public class EditGradeViewModel : GradeBaseViewModel, IDataErrorInfo
     {
         private readonly UniversityContext _context;
-        private Grade? _grade = new Grade();
+        private Grade? _grade;
 
         public string Error => string.Empty;
 
@@ -19,65 +20,71 @@ namespace University.ViewModels
         {
             get
             {
-                if (columnName == "Value")
+                if (columnName == "GradeValue" && GradeValue <= 0)
                 {
-                    if (Value <= 0)
-                    {
-                        return "Grade value must be greater than 0";
-                    }
+                    return "Grade value must be greater than 0";
                 }
-                if (columnName == "StudentId")
+                if (columnName == "SelectedSubjectName" && string.IsNullOrEmpty(SelectedSubjectName))
                 {
-                    if (StudentId <= 0)
-                    {
-                        return "Student ID is required";
-                    }
+                    return "Subject Name is required";
                 }
-                if (columnName == "SubjectId")
+                if (columnName == "SelectedStudentLastName" && string.IsNullOrEmpty(SelectedStudentLastName))
                 {
-                    if (SubjectId <= 0)
-                    {
-                        return "Subject ID is required";
-                    }
+                    return "Student Last Name is required";
                 }
                 return string.Empty;
             }
         }
 
-        private double _value;
-        public double Value
+        private double _gradeValue;
+        public double GradeValue
         {
-            get => _value;
+            get => _gradeValue;
             set
             {
-                _value = value;
-                OnPropertyChanged(nameof(Value));
+                _gradeValue = value;
+                OnPropertyChanged(nameof(GradeValue));
             }
         }
 
-        private int _studentId;
-        public int StudentId
+        private string _selectedStudentLastName;
+        public string SelectedStudentLastName
         {
-            get => _studentId;
+            get => _selectedStudentLastName;
             set
             {
-                _studentId = value;
-                OnPropertyChanged(nameof(StudentId));
+                _selectedStudentLastName = value;
+                OnPropertyChanged(nameof(SelectedStudentLastName));
             }
         }
 
-        private int _subjectId;
-        public int SubjectId
+        public ObservableCollection<string> StudentLastNames { get; } = new();
+
+        private string _selectedSubjectName;
+        public string SelectedSubjectName
         {
-            get => _subjectId;
+            get => _selectedSubjectName;
             set
             {
-                _subjectId = value;
-                OnPropertyChanged(nameof(SubjectId));
+                _selectedSubjectName = value;
+                OnPropertyChanged(nameof(SelectedSubjectName));
             }
         }
 
-        private string _response = string.Empty;
+        public ObservableCollection<string> SubjectNames { get; } = new();
+
+        private DateTime _date;
+        public DateTime Date
+        {
+            get => _date;
+            set
+            {
+                _date = value;
+                OnPropertyChanged(nameof(Date));
+            }
+        }
+
+        private string _response;
         public string Response
         {
             get => _response;
@@ -88,32 +95,46 @@ namespace University.ViewModels
             }
         }
 
-        private int _gradeId = 0;
-        public int GradeId
+        public ICommand BackCommand { get; }
+        public ICommand SaveCommand { get; }
+
+        public EditGradeViewModel(UniversityContext context, IDialogService dialogService, Grade grade)
+            : base(context, dialogService)
         {
-            get => _gradeId;
-            set
+            _context = context;
+            _grade = grade;
+
+            GradeValue = grade.GradeValue;
+            SelectedStudentLastName = grade.Student?.LastName ?? string.Empty;
+            SelectedSubjectName = grade.Subject?.Name ?? string.Empty;
+            Date = grade.Date;
+
+            LoadStudentLastNames();
+            LoadSubjectNames();
+
+            BackCommand = new RelayCommand(NavigateBack);
+            SaveCommand = new AsyncRelayCommand(SaveData);
+        }
+
+        private void LoadStudentLastNames()
+        {
+            StudentLastNames.Clear();
+            foreach (var lastName in _context.Students.Select(s => s.LastName).Distinct())
             {
-                _gradeId = value;
-                OnPropertyChanged(nameof(GradeId));
-                LoadGradeData();
+                StudentLastNames.Add(lastName);
             }
         }
 
-        private ICommand? _back;
-        public ICommand Back
+        private void LoadSubjectNames()
         {
-            get
+            SubjectNames.Clear();
+            foreach (var name in _context.Subjects.Select(s => s.Name).Distinct())
             {
-                if (_back is null)
-                {
-                    _back = new RelayCommand<object>(NavigateBack);
-                }
-                return _back;
+                SubjectNames.Add(name);
             }
         }
 
-        private void NavigateBack(object? obj)
+        private void NavigateBack()
         {
             var instance = MainWindowViewModel.Instance();
             if (instance is not null)
@@ -122,20 +143,7 @@ namespace University.ViewModels
             }
         }
 
-        private ICommand? _save;
-        public ICommand Save
-        {
-            get
-            {
-                if (_save is null)
-                {
-                    _save = new RelayCommand<object>(SaveData);
-                }
-                return _save;
-            }
-        }
-
-        private void SaveData(object? obj)
+        private async Task SaveData()
         {
             if (!IsValid())
             {
@@ -143,54 +151,38 @@ namespace University.ViewModels
                 return;
             }
 
-            if (_grade is null)
+            var student = _context.Students.FirstOrDefault(s => s.LastName == SelectedStudentLastName);
+            if (student == null)
             {
+                Response = "Selected student not found";
                 return;
             }
 
-            _grade.GradeValue = Value;
-            _grade.StudentId = StudentId;
-            _grade.SubjectId = SubjectId;
+            var subject = _context.Subjects.FirstOrDefault(s => s.Name == SelectedSubjectName);
+            if (subject == null)
+            {
+                Response = "Selected subject not found";
+                return;
+            }
+
+            if (_grade is null) return;
+
+            _grade.GradeValue = GradeValue;
+            _grade.StudentId = student.StudentId;
+            _grade.SubjectId = subject.SubjectId;
+            _grade.Date = Date;
 
             _context.Entry(_grade).State = EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             Response = "Grade Data Updated";
         }
 
-        public EditGradeViewModel(UniversityContext context, IDialogService dialogService)
-            : base(context, dialogService)
-        {
-            _context = context;
-        }
-
         private bool IsValid()
         {
-            string[] properties = { "Value", "StudentId", "SubjectId" };
-            foreach (string property in properties)
-            {
-                if (!string.IsNullOrEmpty(this[property]))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private void LoadGradeData()
-        {
-            var grades = _context.Grades;
-            if (grades is not null)
-            {
-                _grade = grades.Find(GradeId);
-                if (_grade is null)
-                {
-                    return;
-                }
-                Value = _grade.GradeValue;
-                StudentId = (int)_grade.StudentId; // Explicit cast to int
-                SubjectId = (int)_grade.SubjectId; // Explicit cast to int
-            }
+            return string.IsNullOrEmpty(this["GradeValue"])
+                && string.IsNullOrEmpty(this["SelectedStudentLastName"])
+                && string.IsNullOrEmpty(this["SelectedSubjectName"]);
         }
     }
 }

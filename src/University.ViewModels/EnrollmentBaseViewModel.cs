@@ -26,7 +26,7 @@ namespace University.ViewModels
             _dialogService = dialogService;
 
             _context.Database.EnsureCreated();
-            _context.Enrollments.Load(); // Ensure you have the correct using directive for EF Core
+            _context.Enrollments.Load();
             Enrollments = _context.Enrollments.Local.ToObservableCollection();
         }
 
@@ -102,19 +102,7 @@ namespace University.ViewModels
             }
         }
 
-        private ICommand? _save;
-        public ICommand Save => _save ??= new RelayCommand<object>(SaveData);
-
         #endregion // Properties And Ctor
-
-        #region Public Methods  
-
-        public virtual void SaveData(object? obj)
-        {
-            // To be implemented in derived classes
-        }
-
-        #endregion // Public Methods
 
         #region Protected Methods
 

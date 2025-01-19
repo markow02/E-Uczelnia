@@ -1,5 +1,8 @@
 ﻿using System.Threading.Tasks;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using University.Interfaces;
+using University.Models;
 
 namespace University.ViewModels;
 
@@ -11,31 +14,33 @@ public class EditClassroomViewModel : ClassroomBaseViewModel
         : base(classroomService, dialogService)
     {
         _classroomService = classroomService;
+        SaveCommand = new RelayCommand(async () => await SaveDataAsync());
     }
 
-    public override async void SaveData(object? obj)
+    public ICommand SaveCommand { get; }
+
+    private async Task SaveDataAsync()
     {
-        if (!IsValid())
+        var classroom = await _classroomService.GetClassroomByIdAsync(ClassroomId);
+        if (classroom == null)
+        {
+            Response = "Error: Classroom not found";
+            return;
+        }
+
+        classroom.ClassroomNumber = ClassroomName;
+        classroom.Capacity = Capacity;
+        classroom.Floor = Floor;
+        classroom.HasProjector = HasProjector;
+        classroom.IsLab = IsLab;
+
+        if (!await _classroomService.IsValidAsync(classroom))
         {
             Response = "Please complete all required fields";
             return;
         }
 
-        var classroom = await _classroomService.GetClassroomByIdAsync(ClassroomId);
-        if (classroom != null)
-        {
-            classroom.ClassroomNumber = this.ClassroomName;
-            classroom.Capacity = this.Capacity;
-            classroom.Floor = this.Floor;
-            classroom.HasProjector = this.HasProjector;
-            classroom.IsLab = this.IsLab;
-
-            await _classroomService.SaveDataAsync(classroom);
-            Response = "Classroom Data Updated";
-        }
-        else
-        {
-            Response = "Error: Classroom not found";
-        }
+        await _classroomService.SaveDataAsync(classroom);
+        Response = "Classroom Data Updated";
     }
 }

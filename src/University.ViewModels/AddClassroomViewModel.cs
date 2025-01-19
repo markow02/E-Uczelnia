@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
-using University.Interfaces;
+﻿using University.Interfaces;
 using University.Models;
+using CommunityToolkit.Mvvm.Input;
+using System.Windows.Input;
+
+
 
 namespace University.ViewModels;
 
@@ -9,9 +12,10 @@ public class AddClassroomViewModel : ClassroomBaseViewModel
     private readonly IClassroomService _classroomService;
 
     public AddClassroomViewModel(IClassroomService classroomService, IDialogService dialogService)
-        : base(classroomService, dialogService)
+    : base(classroomService, dialogService)
     {
         _classroomService = classroomService;
+        SaveCommand = new RelayCommand(async () => await SaveDataAsync(null));
     }
 
     public string ClassroomNumber
@@ -20,14 +24,10 @@ public class AddClassroomViewModel : ClassroomBaseViewModel
         set => ClassroomName = value;
     }
 
-    public override async void SaveData(object? obj)
-    {
-        if (!IsValid())
-        {
-            Response = "Please complete all required fields";
-            return;
-        }
+    public ICommand SaveCommand { get; }
 
+    public async Task SaveDataAsync(object? obj)
+    {
         var classroom = new Classroom
         {
             ClassroomNumber = this.ClassroomName,
@@ -37,9 +37,20 @@ public class AddClassroomViewModel : ClassroomBaseViewModel
             IsLab = this.IsLab
         };
 
-        // Zapisujemy dane za pomocą ClassroomService
-        await _classroomService.SaveDataAsync(classroom);
+        if (!await _classroomService.IsValidAsync(classroom))
+        {
+            Response = "Please complete all required fields";
+            return;
+        }
 
-        Response = "Classroom Data Saved";
+        try
+        {
+            await _classroomService.SaveDataAsync(classroom);
+            Response = "Classroom Data Saved";
+        }
+        catch
+        {
+            Response = "Failed to save classroom data";
+        }
     }
 }

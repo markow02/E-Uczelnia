@@ -9,6 +9,7 @@ public class MainWindowViewModel : ViewModelBase
     private readonly UniversityContext _context;
     private readonly IDialogService _dialogService;
     private readonly IClassroomService _classroomService;
+    private readonly IActivityClubService _activityClubService;
 
     private int _selectedTab;
     public int SelectedTab
@@ -108,17 +109,39 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    public void SetEditGradeView(EditGradeViewModel editGradeViewModel)
+    {
+        GradesSubView = editGradeViewModel;
+        OnPropertyChanged(nameof(GradesSubView));
+    }
+
+    private object? _activityClubSubView = null;
+    public object? ActivityClubSubView
+    {
+        get
+        {
+            return _activityClubSubView;
+        }
+        set
+        {
+            _activityClubSubView = value;
+            OnPropertyChanged(nameof(ActivityClubSubView));
+        }
+    }
+
+
     private static MainWindowViewModel? _instance = null;
     public static MainWindowViewModel? Instance()
     {
         return _instance;
     }
 
-    public MainWindowViewModel(UniversityContext context, IDialogService dialogService, IClassroomService classroomService)
+    public MainWindowViewModel(UniversityContext context, IDialogService dialogService, IClassroomService classroomService, IActivityClubService activityClubService)
     {
         _context = context;
         _dialogService = dialogService;
         _classroomService = classroomService;
+        _activityClubService = activityClubService;
 
         if (_instance is null)
         {
@@ -131,5 +154,6 @@ public class MainWindowViewModel : ViewModelBase
         SearchSubView = new SearchViewModel(_context, _dialogService);
         GradesSubView = new GradeViewModel(_context, _dialogService);
         EnrollmentsSubView = new EnrollmentViewModel(_context, _dialogService);
+        ActivityClubSubView = new ActivityClubViewModel(_activityClubService, _dialogService);
     }
 }

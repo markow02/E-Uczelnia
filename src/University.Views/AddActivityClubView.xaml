@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="University.Views.AddGradeView"
+﻿<UserControl x:Class="University.Views.AddActivityClubView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
@@ -42,12 +42,12 @@
                     Tag="&#xE72B;"
                     DockPanel.Dock="Left"
                     Margin="5" />
-            <TextBlock Text="Add Grade"
+            <TextBlock Text="Add Activity Club"
                        FontSize="20"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
             <Button Content="Save"
-                    Command="{Binding Save}"
+                    Command="{Binding SaveCommand}"
                     Style="{StaticResource PrimaryButton}"
                     Tag="&#xE74E;"
                     DockPanel.Dock="Right"
@@ -57,45 +57,33 @@
         <!-- Form Fields -->
         <StackPanel Grid.Row="1" Margin="10">
             <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Student:"
-                           Width="120"
+                <TextBlock Text="Activity Club Name:"
+                           Width="150"
                            VerticalAlignment="Center"
                            Style="{StaticResource PrimaryTextBlock}" />
-                <ComboBox ItemsSource="{Binding StudentLastNames}"
-                          SelectedItem="{Binding SelectedStudentLastName, UpdateSourceTrigger=PropertyChanged}"
-                          Width="200"
-                          Style="{StaticResource PrimaryComboBox}" />
-            </WrapPanel>
-
-            <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Subject:"
-                           Width="120"
-                           VerticalAlignment="Center"
-                           Style="{StaticResource PrimaryTextBlock}" />
-                <ComboBox ItemsSource="{Binding SubjectNames}"
-                          SelectedItem="{Binding SelectedSubjectName, UpdateSourceTrigger=PropertyChanged}"
-                          Width="200"
-                          Style="{StaticResource PrimaryComboBox}" />
-            </WrapPanel>
-
-            <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Grade Value:"
-                           Width="120"
-                           VerticalAlignment="Center"
-                           Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding GradeValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <TextBox Text="{Binding ActivityClubName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
                          Width="200"
                          Style="{StaticResource PrimaryTextBox}" />
             </WrapPanel>
 
             <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Date:"
-                           Width="120"
+                <TextBlock Text="Description:"
+                           Width="150"
                            VerticalAlignment="Center"
                            Style="{StaticResource PrimaryTextBlock}" />
-                <DatePicker SelectedDate="{Binding Date, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                            Width="200"
-                            Style="{StaticResource PrimaryDatePicker}" />
+                <TextBox Text="{Binding ActivityClubDescription, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Width="200"
+                         Style="{StaticResource PrimaryTextBox}" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <TextBlock Text="Meeting Day:"
+                           Width="150"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource PrimaryTextBlock}" />
+                <TextBox Text="{Binding MeetingDay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                         Width="200"
+                         Style="{StaticResource PrimaryTextBox}" />
             </WrapPanel>
         </StackPanel>
 

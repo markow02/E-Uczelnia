@@ -47,7 +47,7 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
             <Button Content="Save"
-                    Command="{Binding Save}"
+                    Command="{Binding SaveCommand}"
                     Style="{StaticResource PrimaryButton}"
                     Tag="&#xE74E;"
                     DockPanel.Dock="Right"

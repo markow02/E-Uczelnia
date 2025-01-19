@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="University.Views.GradeView"
+﻿<UserControl x:Class="University.Views.ActivityClubView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
@@ -17,52 +17,37 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" LastChildFill="False">
-            <Button Content="Add Grade" Command="{Binding AddCommand}" DockPanel.Dock="Right" Margin="5" 
-                    Style="{StaticResource PrimaryButton}" Tag="&#xE710;" Width="112" />
+            <Button Content="Add Activity Club" Command="{Binding Add}" DockPanel.Dock="Right" Margin="5" Style="{StaticResource PrimaryButton}" Tag="&#xE710;" Width="150" />
         </DockPanel>
-        <ListView Grid.Row="1" ItemsSource="{Binding Grades}" BorderThickness="0" ItemContainerStyle="{StaticResource ListViewPrimaryItem}">
+        <ListView Grid.Row="1" ItemsSource="{Binding ActivityClubs}" BorderThickness="0" ItemContainerStyle="{StaticResource ListViewPrimaryItem}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Student Name">
+                    <GridViewColumn Header="Activity Club Name" DisplayMemberBinding="{Binding ActivityClubName}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Student.Name}" />
+                                <TextBlock Text="{Binding ActivityClubName}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Student Last Name">
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding ActivityClubDescription}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Student.LastName}" />
+                                <TextBlock Text="{Binding ActivityClubDescription}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Subject">
+                    <GridViewColumn Header="Meeting Day" DisplayMemberBinding="{Binding MeetingDay}">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding Subject.Name}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Grade">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding GradeValue}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Date">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Date}" />
+                                <TextBlock Text="{Binding MeetingDay}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                     <GridViewColumn Header="Edit">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}" 
+                                <Button Command="{Binding DataContext.Edit, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                        CommandParameter="{Binding ActivityClubId}"
                                         Style="{StaticResource SecondaryButton}" Tag="&#xE70F;" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -70,8 +55,8 @@
                     <GridViewColumn Header="Remove">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Command="{Binding DataContext.RemoveCommand, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}" 
+                                <Button Command="{Binding DataContext.Remove, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
+                                        CommandParameter="{Binding ActivityClubId}"
                                         Style="{StaticResource SecondaryButton}" Tag="&#xE74D;" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

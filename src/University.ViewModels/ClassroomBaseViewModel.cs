@@ -1,8 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using University.Interfaces;
 using University.Models;
@@ -131,33 +128,10 @@ public abstract class ClassroomBaseViewModel : ViewModelBase, IDataErrorInfo
         }
     }
 
-    private ICommand? _save;
-    public ICommand Save => _save ??= new RelayCommand<object>(SaveData);
 
     #endregion // Properties And Ctor
 
-    #region Public Methods  
-
-    public virtual void SaveData(object? obj)
-    {
-        // To be implemented in derived classes
-    }
-
-    #endregion // Public Methods
-
     #region Protected Methods
-
-    protected bool IsValid()
-    {
-        var errors = new List<string>
-        {
-            this["ClassroomName"],
-            this["Capacity"],
-            this["Floor"]
-        };
-
-        return errors.All(string.IsNullOrEmpty);
-    }
 
     protected async Task LoadRoomDataAsync()
     {

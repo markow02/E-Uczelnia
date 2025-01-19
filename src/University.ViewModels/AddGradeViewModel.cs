@@ -4,74 +4,112 @@ using System.Windows.Input;
 using University.Data;
 using University.Interfaces;
 using University.Models;
+using System.Collections.ObjectModel;
 
 namespace University.ViewModels
 {
     public class AddGradeViewModel : GradeBaseViewModel, IDataErrorInfo
     {
-        private readonly UniversityContext _context;
+        private readonly new UniversityContext _context;
 
         public new string Error => string.Empty;
 
-        public string this[string columnName]
+        public new string this[string columnName]
         {
             get
             {
-                if (columnName == "Value")
+                if (columnName == "GradeValue")
                 {
-                    if (Value <= 0)
+                    if (GradeValue <= 0)
                     {
                         return "Grade value must be greater than 0";
                     }
                 }
-                if (columnName == "StudentId")
+                if (columnName == "SubjectName")
                 {
-                    if (StudentId <= 0)
+                    if (string.IsNullOrEmpty(SubjectName))
                     {
-                        return "Student ID is required";
-                    }
-                }
-                if (columnName == "SubjectId")
-                {
-                    if (SubjectId <= 0)
-                    {
-                        return "Subject ID is required";
+                        return "Subject Name is required";
                     }
                 }
                 return string.Empty;
             }
         }
 
-        private double _value;
-        public double Value
+        private double _gradeValue;
+        public double GradeValue
         {
-            get => _value;
+            get => _gradeValue;
             set
             {
-                _value = value;
-                OnPropertyChanged(nameof(Value));
+                _gradeValue = value;
+                OnPropertyChanged(nameof(GradeValue));
             }
         }
 
-        private int _studentId;
-        public int StudentId
+        private string _selectedStudentLastName;
+        public string SelectedStudentLastName
         {
-            get => _studentId;
+            get => _selectedStudentLastName;
             set
             {
-                _studentId = value;
-                OnPropertyChanged(nameof(StudentId));
+                _selectedStudentLastName = value;
+                OnPropertyChanged(nameof(SelectedStudentLastName));
             }
         }
 
-        private int _subjectId;
-        public int SubjectId
+        private ObservableCollection<string> _studentLastNames;
+        public ObservableCollection<string> StudentLastNames
         {
-            get => _subjectId;
+            get => _studentLastNames;
             set
             {
-                _subjectId = value;
-                OnPropertyChanged(nameof(SubjectId));
+                _studentLastNames = value;
+                OnPropertyChanged(nameof(StudentLastNames));
+            }
+        }
+
+        private string _selectedSubjectName;
+        public string SelectedSubjectName
+        {
+            get => _selectedSubjectName;
+            set
+            {
+                _selectedSubjectName = value;
+                OnPropertyChanged(nameof(SelectedSubjectName));
+            }
+        }
+
+        private ObservableCollection<string> _subjectNames;
+        public ObservableCollection<string> SubjectNames
+        {
+            get => _subjectNames;
+            set
+            {
+                _subjectNames = value;
+                OnPropertyChanged(nameof(SubjectNames));
+            }
+        }
+
+        private string _subjectName = string.Empty;
+        public string SubjectName
+        {
+            get => _subjectName;
+            set
+            {
+                _subjectName = value;
+                OnPropertyChanged(nameof(SubjectName));
+            }
+        }
+
+        private DateTime _date = DateTime.Today;
+        public DateTime Date
+        {
+            get => _date;
+            set
+            {
+                _date = value;
+                OnPropertyChanged(nameof(Date));
             }
         }
 
@@ -87,7 +125,7 @@ namespace University.ViewModels
         }
 
         private ICommand? _back;
-        public ICommand Back
+        public new ICommand Back
         {
             get
             {
@@ -109,7 +147,7 @@ namespace University.ViewModels
         }
 
         private ICommand? _save;
-        public ICommand Save
+        public new ICommand Save
         {
             get
             {
@@ -129,11 +167,26 @@ namespace University.ViewModels
                 return;
             }
 
+            var student = _context.Students.FirstOrDefault(s => s.LastName == SelectedStudentLastName);
+            if (student == null)
+            {
+                Response = "Selected student not found";
+                return;
+            }
+
+            var subject = _context.Subjects.FirstOrDefault(s => s.Name == SelectedSubjectName);
+            if (subject == null)
+            {
+                Response = "Selected subject not found";
+                return;
+            }
+
             var grade = new Grade
             {
-                GradeValue = Value,
-                StudentId = StudentId,
-                SubjectId = SubjectId
+                GradeValue = GradeValue,
+                StudentId = student.StudentId,
+                SubjectId = subject.SubjectId,
+                Date = Date
             };
 
             _context.Grades.Add(grade);
@@ -146,11 +199,23 @@ namespace University.ViewModels
             : base(context, dialogService)
         {
             _context = context;
+            LoadStudentLastNames();
+            LoadSubjectNames();
         }
 
-        private bool IsValid()
+        private void LoadStudentLastNames()
         {
-            string[] properties = { "Value", "StudentId", "SubjectId" };
+            StudentLastNames = new ObservableCollection<string>(_context.Students.Select(s => s.LastName).Distinct().ToList());
+        }
+
+        private void LoadSubjectNames()
+        {
+            SubjectNames = new ObservableCollection<string>(_context.Subjects.Select(s => s.Name).Distinct().ToList());
+        }
+
+        private new bool IsValid()
+        {
+            string[] properties = { "GradeValue", "SelectedStudentLastName", "SelectedSubjectName" };
             foreach (string property in properties)
             {
                 if (!string.IsNullOrEmpty(this[property]))
