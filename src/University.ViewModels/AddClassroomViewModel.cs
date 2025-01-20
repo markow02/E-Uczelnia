@@ -9,7 +9,7 @@ namespace University.ViewModels;
 
 public class AddClassroomViewModel : ClassroomBaseViewModel
 {
-    private readonly IClassroomService _classroomService;
+    private readonly new IClassroomService _classroomService;
 
     public AddClassroomViewModel(IClassroomService classroomService, IDialogService dialogService)
     : base(classroomService, dialogService)

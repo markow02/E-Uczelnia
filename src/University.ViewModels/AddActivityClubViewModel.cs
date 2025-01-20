@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using University.Interfaces;
 using University.Models;
@@ -12,7 +7,7 @@ namespace University.ViewModels
 {
     public class AddActivityClubViewModel : ActivityClubBaseViewModel
     {
-        private readonly IActivityClubService _activityClubService;
+        private new readonly IActivityClubService _activityClubService;
 
         public AddActivityClubViewModel(IActivityClubService activityClubService, IDialogService dialogService)
             : base(activityClubService, dialogService)

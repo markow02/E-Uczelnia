@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace University.Models
+﻿namespace University.Models
 {
     public class Grade
     {
@@ -15,8 +9,8 @@ namespace University.Models
         public DateTime Date { get; set; }
 
         // Navigation properties
-        public virtual Student Student { get; set; }
-        public virtual Subject Subject { get; set; }
+        public virtual Student Student { get; set; } = null!;
+        public virtual Subject Subject { get; set; } = null!;
 
     }
 }

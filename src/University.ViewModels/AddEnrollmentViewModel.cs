@@ -1,10 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using University.Data;
-using University.Extensions;
 using University.Interfaces;
 using University.Models;
 
@@ -13,11 +10,11 @@ namespace University.ViewModels
 {
     public class AddEnrollmentViewModel : EnrollmentBaseViewModel, IDataErrorInfo
     {
-        private readonly UniversityContext _context;
+        private new readonly UniversityContext _context;
 
-        public string Error => string.Empty;
+        public new string Error => string.Empty;
 
-        public string this[string columnName]
+        public new string this[string columnName]
         {
             get
             {
@@ -40,7 +37,7 @@ namespace University.ViewModels
         }
 
         private string _candidateName = string.Empty;
-        public string CandidateName
+        public new string CandidateName
         {
             get => _candidateName;
             set
@@ -51,7 +48,7 @@ namespace University.ViewModels
         }
 
         private string _candidateSurname = string.Empty;
-        public string CandidateSurname
+        public new string CandidateSurname
         {
             get => _candidateSurname;
             set
@@ -73,7 +70,7 @@ namespace University.ViewModels
         }
 
         private ICommand? _back;
-        public ICommand Back
+        public new ICommand Back
         {
             get
             {
@@ -133,7 +130,7 @@ namespace University.ViewModels
             _context = context;
         }
 
-        private bool IsValid()
+        private new bool IsValid()
         {
             string[] properties = { "CandidateName", "CandidateSurname" };
             foreach (string property in properties)

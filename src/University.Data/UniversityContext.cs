@@ -1,10 +1,7 @@
 ﻿using University.Models;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 
 namespace University.Data
 {
@@ -138,14 +135,14 @@ namespace University.Data
             }
         }
 
-        private class UniversityData
+        public class UniversityData
         {
-            public List<Student> Students { get; set; }
-            public List<Subject> Subjects { get; set; }
-            public List<Classroom> Classrooms { get; set; }
-            public List<Enrollment> Enrollments { get; set; }
-            public List<Grade> Grades { get; set; }
-            public List<ActivityClub> ActivityClubs { get; set; }
+            public List<Student> Students { get; set; } = new List<Student>();
+            public List<Subject> Subjects { get; set; } = new List<Subject>();
+            public List<Classroom> Classrooms { get; set; } = new List<Classroom>();
+            public List<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+            public List<Grade> Grades { get; set; } = new List<Grade>();
+            public List<ActivityClub> ActivityClubs { get; set; } = new List<ActivityClub>();
         }
     }
 }

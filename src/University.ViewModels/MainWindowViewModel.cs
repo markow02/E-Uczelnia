@@ -1,5 +1,4 @@
-﻿﻿using System;
-using University.Interfaces;
+﻿using University.Interfaces;
 using University.Data;
 
 namespace University.ViewModels;

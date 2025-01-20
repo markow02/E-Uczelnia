@@ -47,7 +47,7 @@ namespace University.ViewModels
             }
         }
 
-        private string _selectedStudentLastName;
+        private string _selectedStudentLastName = string.Empty;
         public string SelectedStudentLastName
         {
             get => _selectedStudentLastName;
@@ -58,7 +58,7 @@ namespace University.ViewModels
             }
         }
 
-        private ObservableCollection<string> _studentLastNames;
+        private ObservableCollection<string> _studentLastNames = new();
         public ObservableCollection<string> StudentLastNames
         {
             get => _studentLastNames;
@@ -69,7 +69,7 @@ namespace University.ViewModels
             }
         }
 
-        private string _selectedSubjectName;
+        private string _selectedSubjectName = string.Empty;
         public string SelectedSubjectName
         {
             get => _selectedSubjectName;
@@ -80,7 +80,7 @@ namespace University.ViewModels
             }
         }
 
-        private ObservableCollection<string> _subjectNames;
+        private ObservableCollection<string> _subjectNames = new();
         public ObservableCollection<string> SubjectNames
         {
             get => _subjectNames;
@@ -147,7 +147,7 @@ namespace University.ViewModels
         }
 
         private ICommand? _save;
-        public new ICommand Save
+        public ICommand Save
         {
             get
             {

@@ -1,14 +1,13 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using University.Interfaces;
-using University.Models;
+
 
 namespace University.ViewModels;
 
 public class EditClassroomViewModel : ClassroomBaseViewModel
 {
-    private readonly IClassroomService _classroomService;
+    private new readonly IClassroomService _classroomService;
 
     public EditClassroomViewModel(IClassroomService classroomService, IDialogService dialogService)
         : base(classroomService, dialogService)

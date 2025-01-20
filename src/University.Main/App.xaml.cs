@@ -61,7 +61,8 @@ namespace University.Main
             e.Handled = true;
         }
 
-        private void OnProcessExit(object? sender, EventArgs e)
+
+        private void OnProcessExit(object sender, EventArgs e)
         {
             // Retrieve the UniversityContext from the service provider
             var dbContext = ServiceProvider.GetService<UniversityContext>();

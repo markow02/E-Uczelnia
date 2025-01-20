@@ -53,7 +53,7 @@ namespace University.Services
             await Task.Run(() => _context.SaveChanges());
         }
 
-        public async Task<Classroom?> GetClassroomByIdAsync(long classroomId)
+        public async Task<Classroom> GetClassroomByIdAsync(long classroomId)
         {
             return await Task.FromResult(
                 _context.Classrooms.FirstOrDefault(c => c.ClassroomId == classroomId)

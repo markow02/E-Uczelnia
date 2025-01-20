@@ -44,6 +44,7 @@ namespace University.ViewModels
             _context = context;
             _dialogService = dialogService;
 
+            _grades = new ObservableCollection<Grade>();
             _context.Database.EnsureCreated();
             _context.Grades.Load();
             Grades = _context.Grades.Local.ToObservableCollection();
@@ -52,6 +53,7 @@ namespace University.ViewModels
             EditCommand = new RelayCommand<object>(EditGrade);
             RemoveCommand = new AsyncRelayCommand<object>(RemoveGrade);
         }
+
 
         private void AddNewGrade()
         {
@@ -63,7 +65,7 @@ namespace University.ViewModels
 
         }
 
-        private void EditGrade(object obj)
+        private void EditGrade(object? obj)
         {
             if (obj is Grade grade)
             {
@@ -72,7 +74,7 @@ namespace University.ViewModels
             }
         }
 
-        private async Task RemoveGrade(object obj)
+        private async Task RemoveGrade(object? obj)
         {
             if (obj is Grade grade)
             {
@@ -85,5 +87,6 @@ namespace University.ViewModels
                 }
             }
         }
+
     }
 }

@@ -11,24 +11,25 @@ namespace University.ViewModels
 {
     public class EditGradeViewModel : GradeBaseViewModel, IDataErrorInfo
     {
-        private readonly UniversityContext _context;
-        private Grade? _grade;
+        private new readonly UniversityContext _context;
+        private new readonly Grade? _grade;
 
-        public string Error => string.Empty;
 
-        public string this[string columnName]
+        public new string Error => string.Empty;
+
+        public new string this[string columnName]
         {
             get
             {
-                if (columnName == "GradeValue" && GradeValue <= 0)
+                if (columnName == nameof(GradeValue) && GradeValue <= 0)
                 {
                     return "Grade value must be greater than 0";
                 }
-                if (columnName == "SelectedSubjectName" && string.IsNullOrEmpty(SelectedSubjectName))
+                if (columnName == nameof(SelectedSubjectName) && string.IsNullOrEmpty(SelectedSubjectName))
                 {
                     return "Subject Name is required";
                 }
-                if (columnName == "SelectedStudentLastName" && string.IsNullOrEmpty(SelectedStudentLastName))
+                if (columnName == nameof(SelectedStudentLastName) && string.IsNullOrEmpty(SelectedStudentLastName))
                 {
                     return "Student Last Name is required";
                 }
@@ -42,8 +43,11 @@ namespace University.ViewModels
             get => _gradeValue;
             set
             {
-                _gradeValue = value;
-                OnPropertyChanged(nameof(GradeValue));
+                if (_gradeValue != value)
+                {
+                    _gradeValue = value;
+                    OnPropertyChanged(nameof(GradeValue));
+                }
             }
         }
 
@@ -53,8 +57,11 @@ namespace University.ViewModels
             get => _selectedStudentLastName;
             set
             {
-                _selectedStudentLastName = value;
-                OnPropertyChanged(nameof(SelectedStudentLastName));
+                if (_selectedStudentLastName != value)
+                {
+                    _selectedStudentLastName = value;
+                    OnPropertyChanged(nameof(SelectedStudentLastName));
+                }
             }
         }
 
@@ -66,8 +73,11 @@ namespace University.ViewModels
             get => _selectedSubjectName;
             set
             {
-                _selectedSubjectName = value;
-                OnPropertyChanged(nameof(SelectedSubjectName));
+                if (_selectedSubjectName != value)
+                {
+                    _selectedSubjectName = value;
+                    OnPropertyChanged(nameof(SelectedSubjectName));
+                }
             }
         }
 
@@ -79,8 +89,11 @@ namespace University.ViewModels
             get => _date;
             set
             {
-                _date = value;
-                OnPropertyChanged(nameof(Date));
+                if (_date != value)
+                {
+                    _date = value;
+                    OnPropertyChanged(nameof(Date));
+                }
             }
         }
 
@@ -90,23 +103,29 @@ namespace University.ViewModels
             get => _response;
             set
             {
-                _response = value;
-                OnPropertyChanged(nameof(Response));
+                if (_response != value)
+                {
+                    _response = value;
+                    OnPropertyChanged(nameof(Response));
+                }
             }
         }
 
         public ICommand BackCommand { get; }
         public ICommand SaveCommand { get; }
 
+
         public EditGradeViewModel(UniversityContext context, IDialogService dialogService, Grade grade)
-            : base(context, dialogService)
+    : base(context, dialogService)
         {
             _context = context;
-            _grade = grade;
+            _grade = grade ?? throw new ArgumentNullException(nameof(grade));
+
+            _response = string.Empty;
+            _selectedSubjectName = grade.Subject?.Name ?? string.Empty;
+            _selectedStudentLastName = grade.Student?.LastName ?? string.Empty;
 
             GradeValue = grade.GradeValue;
-            SelectedStudentLastName = grade.Student?.LastName ?? string.Empty;
-            SelectedSubjectName = grade.Subject?.Name ?? string.Empty;
             Date = grade.Date;
 
             LoadStudentLastNames();
@@ -115,6 +134,7 @@ namespace University.ViewModels
             BackCommand = new RelayCommand(NavigateBack);
             SaveCommand = new AsyncRelayCommand(SaveData);
         }
+
 
         private void LoadStudentLastNames()
         {
@@ -178,11 +198,11 @@ namespace University.ViewModels
             Response = "Grade Data Updated";
         }
 
-        private bool IsValid()
+        private new bool IsValid()
         {
-            return string.IsNullOrEmpty(this["GradeValue"])
-                && string.IsNullOrEmpty(this["SelectedStudentLastName"])
-                && string.IsNullOrEmpty(this["SelectedSubjectName"]);
+            return string.IsNullOrEmpty(this[nameof(GradeValue)])
+                && string.IsNullOrEmpty(this[nameof(SelectedStudentLastName)])
+                && string.IsNullOrEmpty(this[nameof(SelectedSubjectName)]);
         }
     }
 }

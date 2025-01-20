@@ -1,16 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.Input;
-using System.Collections.ObjectModel;
-using System.Linq;
 using System.Windows.Input;
 using University.Data;
 using University.Interfaces;
-using University.Models;
 
 namespace University.ViewModels
 {
     public class EnrollmentViewModel : EnrollmentBaseViewModel
     {
-        private readonly IDialogService _dialogService;
+        private new readonly IDialogService _dialogService;
 
         private bool? _dialogResult = null;
         public bool? DialogResult

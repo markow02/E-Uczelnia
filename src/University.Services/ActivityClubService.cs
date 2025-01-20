@@ -23,23 +23,22 @@ namespace University.Services
 
         public async Task<bool> IsValidAsync(ActivityClub activityClub)
         {
-            // Add validation logic here
             if (string.IsNullOrEmpty(activityClub.ActivityClubName))
             {
-                return false;
+                return await Task.FromResult(false);
             }
 
             if (string.IsNullOrEmpty(activityClub.MeetingDay))
             {
-                return false;
+                return await Task.FromResult(false);
             }
 
             if (string.IsNullOrEmpty(activityClub.ActivityClubDescription))
             {
-                return false;
+                return await Task.FromResult(false);
             }
 
-            return true;
+            return await Task.FromResult(true);
         }
 
         public async Task SaveDataAsync(ActivityClub activityClub)
@@ -55,7 +54,7 @@ namespace University.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ActivityClub?> GetActivityClubByIdAsync(int activityClubId)
+        public async Task<ActivityClub> GetActivityClubByIdAsync(int activityClubId)
         {
             return await _context.ActivityClubs.FindAsync(activityClubId);
         }

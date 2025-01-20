@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using University.Interfaces;
 
@@ -7,7 +6,7 @@ namespace University.ViewModels
 {
     public class EditActivityClubViewModel : ActivityClubBaseViewModel
     {
-        private readonly IActivityClubService _activityClubService;
+        private new readonly IActivityClubService _activityClubService;
 
         public EditActivityClubViewModel(IActivityClubService activityClubService, IDialogService dialogService)
             : base(activityClubService, dialogService)
