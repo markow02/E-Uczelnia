@@ -56,9 +56,9 @@ namespace University.Data
             );
 
             modelBuilder.Entity<Enrollment>().HasData(
-                new Enrollment { EnrollmentId = 1, CandidateName = "Jan", CandidateSurname = "Nowak", CandidateSchool = "ZST" },
-                new Enrollment { EnrollmentId = 2, CandidateName = "Anna", CandidateSurname = "Kowalska", CandidateSchool = "sikorak" },
-                new Enrollment { EnrollmentId = 3, CandidateName = "Michał", CandidateSurname = "Kowalczyk", CandidateSchool = "smolen" }
+                new Enrollment { EnrollmentId = 1, CandidateName = "Jan", CandidateSurname = "Nowak", CandidateSchool = "Szkoła Branżowa" },
+                new Enrollment { EnrollmentId = 2, CandidateName = "Anna", CandidateSurname = "Kowalska", CandidateSchool = "Liceum Ogólnokształcące nr 1" },
+                new Enrollment { EnrollmentId = 3, CandidateName = "Michał", CandidateSurname = "Kowalczyk", CandidateSchool = "Technikum nr 6" }
             );
 
             modelBuilder.Entity<Grade>().HasData(

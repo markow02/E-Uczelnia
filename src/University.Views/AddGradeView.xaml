@@ -80,12 +80,13 @@
 
             <WrapPanel Margin="0,5,0,5">
                 <TextBlock Text="Grade Value:"
-                           Width="120"
-                           VerticalAlignment="Center"
-                           Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding GradeValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                         Width="200"
-                         Style="{StaticResource PrimaryTextBox}" />
+               Width="120"
+               VerticalAlignment="Center"
+               Style="{StaticResource PrimaryTextBlock}" />
+                <ComboBox ItemsSource="{Binding GradeValues}"
+              SelectedItem="{Binding GradeValue, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+              Width="200"
+              Style="{StaticResource PrimaryComboBox}" />
             </WrapPanel>
 
             <WrapPanel Margin="0,5,0,5">

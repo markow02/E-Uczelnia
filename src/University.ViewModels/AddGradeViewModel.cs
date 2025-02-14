@@ -36,8 +36,8 @@ namespace University.ViewModels
             }
         }
 
-        private double _gradeValue;
-        public double GradeValue
+        private int _gradeValue;
+        public int GradeValue
         {
             get => _gradeValue;
             set
@@ -46,6 +46,8 @@ namespace University.ViewModels
                 OnPropertyChanged(nameof(GradeValue));
             }
         }
+
+        public List<int> GradeValues { get; } = new List<int> { 1, 2, 3, 4, 5, 6 };
 
         private string _selectedStudentLastName = string.Empty;
         public string SelectedStudentLastName
