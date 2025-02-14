@@ -75,7 +75,7 @@ namespace University.ViewModels
             get => _candidateSchool;
             set
             {
-                _candidateSurname = value;
+                _candidateSchool = value;
                 OnPropertyChanged(nameof(CandidateSurname));
             }
         }
