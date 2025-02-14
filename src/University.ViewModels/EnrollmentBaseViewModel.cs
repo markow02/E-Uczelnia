@@ -40,6 +40,7 @@ namespace University.ViewModels
                 {
                     "CandidateName" when string.IsNullOrEmpty(CandidateName) => "Candidate name is required",
                     "CandidateSurname" when string.IsNullOrEmpty(CandidateSurname) => "Candidate surname is required",
+                    "CandidateSchool" when string.IsNullOrEmpty(CandidateSchool) => "Candidate school is required",
                     _ => string.Empty,
                 };
             }
@@ -79,6 +80,17 @@ namespace University.ViewModels
             }
         }
 
+        private string _candidateSchool = string.Empty;
+        public string CandidateSchool
+        {
+            get => _candidateSchool;
+            set
+            {
+                _candidateSchool = value;
+                OnPropertyChanged(nameof(CandidateSchool));
+            }
+        }
+
         private ObservableCollection<Enrollment>? _enrollments;
         public ObservableCollection<Enrollment>? Enrollments
         {
@@ -109,10 +121,11 @@ namespace University.ViewModels
         protected bool IsValid()
         {
             var errors = new List<string>
-            {
-                this["CandidateName"],
-                this["CandidateSurname"]
-            };
+                {
+                    this["CandidateName"],
+                    this["CandidateSurname"],
+                    this["CandidateSchool"]
+                };
 
             return errors.All(string.IsNullOrEmpty);
         }
@@ -132,6 +145,7 @@ namespace University.ViewModels
 
             CandidateName = _enrollment.CandidateName;
             CandidateSurname = _enrollment.CandidateSurname;
+            CandidateSchool = _enrollment.CandidateSchool;
         }
 
         #endregion // Protected Methods

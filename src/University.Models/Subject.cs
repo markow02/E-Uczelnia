@@ -9,5 +9,6 @@
         public bool IsSelected { get; set; } = false;
         public virtual ICollection<Student>? Students { get; set; } = null;
         public virtual ICollection<Grade>? Grades { get; set; }
+        public virtual ICollection<Exam>? Exams { get; set; }
     }
 }

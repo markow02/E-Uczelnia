@@ -63,7 +63,7 @@ namespace University.ViewModels
                 if (enrollment is not null)
                 {
                     DialogResult = _dialogService.Show(
-                        $"Are you sure you want to remove the enrollment for '{enrollment.CandidateName} {enrollment.CandidateSurname}'?"
+                        $"Are you sure you want to remove the enrollment for '{enrollment.CandidateName} {enrollment.CandidateSurname} {enrollment.CandidateSchool}'?"
                     );
 
                     if (DialogResult == true)

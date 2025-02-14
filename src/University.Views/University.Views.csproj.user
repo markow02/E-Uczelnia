@@ -8,6 +8,9 @@
     <Compile Update="AddActivityClubView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="AddExamView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="AddGradeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -17,10 +20,16 @@
     <Compile Update="EditEnrollmentView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="EditExamView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="EditGradeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="EnrollmentView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ExamView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GradeView.xaml.cs">

@@ -128,6 +128,26 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
+    private object? _examSubView = null;
+    public object? ExamSubView
+    {
+        get
+        {
+            return _examSubView;
+        }
+        set
+        {
+            _examSubView = value;
+            OnPropertyChanged(nameof(ExamSubView));
+        }
+    }
+
+    public void SetEditExamView(EditExamViewModel editExamViewModel)
+    {
+        ExamSubView = editExamViewModel;
+        OnPropertyChanged(nameof(ExamSubView));
+    }
+
 
     private static MainWindowViewModel? _instance = null;
     public static MainWindowViewModel? Instance()
@@ -142,6 +162,7 @@ public class MainWindowViewModel : ViewModelBase
         _classroomService = classroomService;
         _activityClubService = activityClubService;
 
+
         if (_instance is null)
         {
             _instance = this;
@@ -154,5 +175,6 @@ public class MainWindowViewModel : ViewModelBase
         GradesSubView = new GradeViewModel(_context, _dialogService);
         EnrollmentsSubView = new EnrollmentViewModel(_context, _dialogService);
         ActivityClubSubView = new ActivityClubViewModel(_activityClubService, _dialogService);
+        ExamSubView = new ExamViewModel(_context, _dialogService);
     }
 }

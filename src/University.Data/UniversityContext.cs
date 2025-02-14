@@ -21,6 +21,8 @@ namespace University.Data
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<ActivityClub> ActivityClubs { get; set; }
+        public DbSet<Exam> Exams { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -35,18 +37,6 @@ namespace University.Data
         {
             modelBuilder.Entity<Subject>().Ignore(s => s.IsSelected);
 
-            // Relacje dla Grade
-            modelBuilder.Entity<Grade>()
-                .HasOne(g => g.Student)               // Relacja 1 do wielu: Grade -> Student
-                .WithMany(s => s.Grades)              // Student może mieć wiele ocen
-                .HasForeignKey(g => g.StudentId)      // Klucz obcy
-                .OnDelete(DeleteBehavior.Cascade);    // Usuwanie kaskadowe
-
-            modelBuilder.Entity<Grade>()
-                .HasOne(g => g.Subject)               // Relacja 1 do wielu: Grade -> Subject
-                .WithMany(s => s.Grades)              // Subject może mieć wiele ocen
-                .HasForeignKey(g => g.SubjectId)      // Klucz obcy
-                .OnDelete(DeleteBehavior.Cascade);    // Usuwanie kaskadowe
 
             modelBuilder.Entity<Student>().HasData(
                 new Student { StudentId = 1, Name = "Wieńczysław", LastName = "Nowakowicz", PESEL = "PESEL1", BirthDate = new DateTime(1987, 05, 22) },
@@ -66,9 +56,9 @@ namespace University.Data
             );
 
             modelBuilder.Entity<Enrollment>().HasData(
-                new Enrollment { EnrollmentId = 1, CandidateName = "Jan", CandidateSurname = "Nowak" },
-                new Enrollment { EnrollmentId = 2, CandidateName = "Anna", CandidateSurname = "Kowalska" },
-                new Enrollment { EnrollmentId = 3, CandidateName = "Michał", CandidateSurname = "Kowalczyk" }
+                new Enrollment { EnrollmentId = 1, CandidateName = "Jan", CandidateSurname = "Nowak", CandidateSchool = "ZST" },
+                new Enrollment { EnrollmentId = 2, CandidateName = "Anna", CandidateSurname = "Kowalska", CandidateSchool = "sikorak" },
+                new Enrollment { EnrollmentId = 3, CandidateName = "Michał", CandidateSurname = "Kowalczyk", CandidateSchool = "smolen" }
             );
 
             modelBuilder.Entity<Grade>().HasData(
@@ -83,7 +73,38 @@ namespace University.Data
             new ActivityClub { ActivityClubId = 1, ActivityClubName = "Math Club", MeetingDay = "Monday", ActivityClubDescription = "Explore the beauty of numbers and logic." },
             new ActivityClub { ActivityClubId = 2, ActivityClubName = "Biology Club", MeetingDay = "Tuesday", ActivityClubDescription = "Dive into the wonders of life and nature." },
             new ActivityClub { ActivityClubId = 3, ActivityClubName = "Chemistry Club", MeetingDay = "Friday", ActivityClubDescription = "Experiment with reactions and unlock new discoveries." }
-);
+            );
+
+            modelBuilder.Entity<Exam>().HasData(
+                new Exam { ExamId = 1, ClassroomId = 1, SubjectId = 1, ExamType = "Oral", ExamDate1 = new DateTime(2024, 01, 15), ExamDate2 = new DateTime(2024, 01, 16), },
+                new Exam { ExamId = 2, ClassroomId = 2, SubjectId = 2, ExamType = "Written", ExamDate1 = new DateTime(2024, 02, 20), ExamDate2 = new DateTime(2024, 02, 21) },
+                new Exam { ExamId = 3, ClassroomId = 3, SubjectId = 3, ExamType = "Written", ExamDate1 = new DateTime(2024, 03, 25), ExamDate2 = new DateTime(2024, 03, 26) }
+            );
+            // Relacje dla Grade
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.Student)               // Relacja 1 do wielu: Grade -> Student
+                .WithMany(s => s.Grades)              // Student może mieć wiele ocen
+                .HasForeignKey(g => g.StudentId)      // Klucz obcy
+                .OnDelete(DeleteBehavior.Cascade);    // Usuwanie kaskadowe
+
+            modelBuilder.Entity<Grade>()
+                .HasOne(g => g.Subject)               // Relacja 1 do wielu: Grade -> Subject
+                .WithMany(s => s.Grades)              // Subject może mieć wiele ocen
+                .HasForeignKey(g => g.SubjectId)      // Klucz obcy
+                .OnDelete(DeleteBehavior.Cascade);    // Usuwanie kaskadowe
+
+            //Relacje dla Exam
+            modelBuilder.Entity<Exam>()
+                .HasOne(e => e.Subject)
+                .WithMany(s => s.Exams)
+                .HasForeignKey(e => e.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Exam>()
+               .HasOne(e => e.Classroom)
+               .WithMany(s => s.Exams)
+               .HasForeignKey(e => e.SubjectId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         }
 

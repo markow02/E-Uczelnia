@@ -34,6 +34,9 @@
             <TabItem Header="Enrollments" Tag="&#xEC25;">
                 <ContentControl Content="{Binding EnrollmentsSubView}" />
             </TabItem>
+            <TabItem Header="Exams" Tag="&#xEC25;">
+                <ContentControl Content="{Binding ExamSubView}" />
+            </TabItem>
             <TabItem Header="Search" Tag="&#xE773;">
                 <ContentControl Content="{Binding SearchSubView}" />
             </TabItem>

@@ -8,5 +8,7 @@
         public int Floor { get; set; }
         public bool HasProjector { get; set; }
         public bool IsLab { get; set; }
+
+        public virtual ICollection<Exam>? Exams { get; set; }
     }
 }

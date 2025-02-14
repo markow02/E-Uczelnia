@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="University.Views.AddEnrollmentView"
+﻿<UserControl x:Class="University.Views.AddExamView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  
@@ -37,17 +37,17 @@
         <!-- Header with Back and Save buttons -->
         <DockPanel Grid.Row="0" LastChildFill="False">
             <Button Content="Back"
-                    Command="{Binding Back}"
+                    Command="{Binding BackCommand}"
                     Style="{StaticResource PrimaryButton}"
                     Tag="&#xE72B;"
                     DockPanel.Dock="Left"
                     Margin="5" />
-            <TextBlock Text="Add Enrollment"
+            <TextBlock Text="Add Exam"
                        FontSize="20"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center" />
             <Button Content="Save"
-                    Command="{Binding Save}"
+                    Command="{Binding SaveCommand}"
                     Style="{StaticResource PrimaryButton}"
                     Tag="&#xE74E;"
                     DockPanel.Dock="Right"
@@ -57,33 +57,56 @@
         <!-- Form Fields -->
         <StackPanel Grid.Row="1" Margin="10">
             <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Candidate Name:"
+                <TextBlock Text="Subject:"
                            Width="120"
                            VerticalAlignment="Center"
                            Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding CandidateName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                         Width="200"
-                         Style="{StaticResource PrimaryTextBox}" />
+                <ComboBox ItemsSource="{Binding SubjectNames}"
+                          SelectedItem="{Binding SelectedSubjectName, UpdateSourceTrigger=PropertyChanged}"
+                          Width="200"
+                          Style="{StaticResource PrimaryComboBox}" />
             </WrapPanel>
 
             <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Candidate Surname:"
+                <TextBlock Text="Classroom:"
                            Width="120"
                            VerticalAlignment="Center"
                            Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding CandidateSurname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
-                         Width="200"
-                         Style="{StaticResource PrimaryTextBox}" />
+                <ComboBox ItemsSource="{Binding ClassroomNumbers}"
+                          SelectedItem="{Binding SelectedClassroomNumber, UpdateSourceTrigger=PropertyChanged}"
+                          Width="200"
+                          Style="{StaticResource PrimaryComboBox}" />
             </WrapPanel>
 
             <WrapPanel Margin="0,5,0,5">
-                <TextBlock Text="Candidate School:"
-                Width="120"
-                VerticalAlignment="Center"
-                Style="{StaticResource PrimaryTextBlock}" />
-                <TextBox Text="{Binding CandidateSchool, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                <TextBlock Text="Exam Type:"
+               Width="120"
+               VerticalAlignment="Center"
+               Style="{StaticResource PrimaryTextBlock}" />
+                <ComboBox ItemsSource="{Binding ExamTypes}"
+              SelectedItem="{Binding SelectedExamType, UpdateSourceTrigger=PropertyChanged}"
               Width="200"
-              Style="{StaticResource PrimaryTextBox}" />
+              Style="{StaticResource PrimaryComboBox}" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <TextBlock Text="Exam Date 1:"
+                           Width="120"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource PrimaryTextBlock}" />
+                <DatePicker SelectedDate="{Binding ExamDate1, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            Width="200"
+                            Style="{StaticResource PrimaryDatePicker}" />
+            </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <TextBlock Text="Exam Date 2:"
+                           Width="120"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource PrimaryTextBlock}" />
+                <DatePicker SelectedDate="{Binding ExamDate2, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+                            Width="200"
+                            Style="{StaticResource PrimaryDatePicker}" />
             </WrapPanel>
         </StackPanel>
 

@@ -75,6 +75,16 @@
                          Width="200"
                          Style="{StaticResource PrimaryTextBox}" />
             </WrapPanel>
+
+            <WrapPanel Margin="0,5,0,5">
+                <TextBlock Text="Candidate School:"
+               Width="120"
+               VerticalAlignment="Center"
+               Style="{StaticResource PrimaryTextBlock}" />
+                <TextBox Text="{Binding CandidateSchool, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" 
+             Width="200"
+             Style="{StaticResource PrimaryTextBox}" />
+            </WrapPanel>
         </StackPanel>
 
         <!-- Response Message -->

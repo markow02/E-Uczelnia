@@ -36,6 +36,13 @@ namespace University.ViewModels
                         return "Candidate Surname is Required";
                     }
                 }
+                if (columnName == "CandidateSchool")
+                {
+                    if (string.IsNullOrEmpty(CandidateSchool))
+                    {
+                        return "Candidate School is Required";
+                    }
+                }
                 return string.Empty;
             }
         }
@@ -55,6 +62,17 @@ namespace University.ViewModels
         public new string CandidateSurname
         {
             get => _candidateSurname;
+            set
+            {
+                _candidateSurname = value;
+                OnPropertyChanged(nameof(CandidateSurname));
+            }
+        }
+
+        private string _candidateSchool = string.Empty;
+        public new string CandidateSchool
+        {
+            get => _candidateSchool;
             set
             {
                 _candidateSurname = value;
@@ -135,6 +153,7 @@ namespace University.ViewModels
 
             _enrollment.CandidateName = CandidateName;
             _enrollment.CandidateSurname = CandidateSurname;
+            _enrollment.CandidateSchool = CandidateSchool;
 
             _context.Entry(_enrollment).State = EntityState.Modified;
             _context.SaveChanges();
@@ -150,7 +169,7 @@ namespace University.ViewModels
 
         private new bool IsValid()
         {
-            string[] properties = { "CandidateName", "CandidateSurname" };
+            string[] properties = { "CandidateName", "CandidateSurname", "CandidateSchool" };
             foreach (string property in properties)
             {
                 if (!string.IsNullOrEmpty(this[property]))
