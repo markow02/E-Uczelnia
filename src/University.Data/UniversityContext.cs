@@ -15,13 +15,13 @@ namespace University.Data
         {
         }
 
-        public DbSet<Student> Students { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Classroom> Classrooms { get; set; }
-        public DbSet<Enrollment> Enrollments { get; set; }
-        public DbSet<Grade> Grades { get; set; }
-        public DbSet<ActivityClub> ActivityClubs { get; set; }
-        public DbSet<Exam> Exams { get; set; }
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<Classroom> Classrooms { get; set; }
+        public virtual DbSet<Enrollment> Enrollments { get; set; }
+        public virtual DbSet<Grade> Grades { get; set; }
+        public virtual DbSet<ActivityClub> ActivityClubs { get; set; }
+        public virtual DbSet<Exam> Exams { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
